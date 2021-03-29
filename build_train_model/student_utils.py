@@ -10,13 +10,14 @@ def reduce_dimension_ndc(df, ndc_df):
                   left_on='ndc_code', 
                   right_on='NDC_Code')
     df['generic_drug_name'] = df['Non-proprietary Name']
+    df = df.drop(['NDC_Code', 'Non-proprietary Name'], axis=1)
     return df
 
 #Question 4
 def select_first_encounter(df):
   
     # sort encounter values
-    df = df.sort_values('encounter_id')
+    df = df.sort_values(['encounter_id'], ascending=True)
     first_encounter_values = df.groupby('patient_nbr')['encounter_id'].head(1).values
     first_encounter_df = df[df['encounter_id'].isin(first_encounter_values)]
     return first_encounter_df
